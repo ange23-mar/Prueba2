@@ -8,3 +8,7 @@ data class TransaccionVenta(
     val montoTotal:Double=0.0,
     val errorTransa: ErrorTransaccionVenta = ErrorTransaccionVenta()
 )
+
+
+
+
