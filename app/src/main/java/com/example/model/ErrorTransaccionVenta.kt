@@ -1,6 +1,6 @@
 package com.example.model
 
-data class ErrorTransaccion(
+data class ErrorTransaccionVenta(
     val idTransaccion: Int? = null,
     val idAccesoIngreso:Int? = null,
     val idUsuario:Int? = null,

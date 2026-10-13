@@ -1,10 +1,10 @@
 package com.example.model
 
 data class TransaccionVenta(
-    val idTransaccion: Int,
-    val idAccesoIngreso:Int,
-    val idUsuario:Int,
-    val fechaHora:String,
-    val montoTotal:Double,
-    val errorTransa: ErrorTransaccion = ErrorTransaccionVenta()
+    val idTransaccion: Int=0,
+    val idAccesoIngreso:Int=0,
+    val idUsuario:Int=0,
+    val fechaHora:String= "",
+    val montoTotal:Double=0.0,
+    val errorTransa: ErrorTransaccionVenta = ErrorTransaccionVenta()
 )
