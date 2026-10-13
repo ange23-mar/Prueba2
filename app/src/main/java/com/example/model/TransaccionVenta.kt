@@ -5,5 +5,6 @@ data class TransaccionVenta(
     val idAccesoIngreso:Int,
     val idUsuario:Int,
     val fechaHora:String,
-    val montoTotal:Double
+    val montoTotal:Double,
+    val errorTransa: ErrorTransaccion = ErrorTransaccionVenta()
 )
