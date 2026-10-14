@@ -26,10 +26,9 @@ data class SistemaProyec(
 )
 
 abstract class SistemaViewModel : ViewModel() {
-    private val _estado = MutableStateFlow(SistemaProyec())
-    val estado: StateFlow<SistemaProyec> = _estado.asStateFlow()
+    private val _estado = MutableStateFlow(value = SistemaProyec())
+    val estado: StateFlow<SistemaProyec> = _estado
 
-    private val emailRegex = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}\$")
 
    //Acceso
     fun onIdAccesoChange(valor: String) {
@@ -282,11 +281,9 @@ abstract class SistemaViewModel : ViewModel() {
         val errores = ErrorUsuario(
             idUsuario = if (idUserInt <= 0) "ID de usuario inválido" else null,
             nombre = if (usuarioActual.nombre.isBlank()) "El nombre es obligatorio" else null,
-            correo = when {
-                usuarioActual.correo.isBlank() -> "El correo es obligatorio"
-                !emailRegex.matches(usuarioActual.correo) -> "Formato de correo inválido"
-                else -> null
-            }
+            correo = if (!usuarioActual.correo.contains("@")) "Correo inválido" else null
+
+
         )
 
         val hayErrores = listOfNotNull(
