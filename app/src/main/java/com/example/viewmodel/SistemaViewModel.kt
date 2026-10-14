@@ -31,9 +31,7 @@ abstract class SistemaViewModel : ViewModel() {
 
     private val emailRegex = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}\$")
 
-    // ==========================================
-    // 1. ACCESO
-    // ==========================================
+   //Acceso
     fun onIdAccesoChange(valor: String) {
         _estado.update {
             it.copy(
@@ -82,10 +80,7 @@ abstract class SistemaViewModel : ViewModel() {
 
         return !hayErrores
     }
-
-    // ==========================================
-    // 2. REGISTRO CONTEO
-    // ==========================================
+//Registro
     fun onIdRegistroChange(valor: String) {
         _estado.update {
             it.copy(
@@ -171,9 +166,7 @@ abstract class SistemaViewModel : ViewModel() {
         return !hayErrores
     }
 
-    // ==========================================
-    // 3. TRANSACCIÓN VENTA
-    // ==========================================
+    //transaccion
     fun onIdTransaccionChange(valor: String) {
         _estado.update {
             it.copy(
@@ -245,9 +238,7 @@ abstract class SistemaViewModel : ViewModel() {
         return !hayErrores
     }
 
-    // ==========================================
-    // 4. USUARIO
-    // ==========================================
+//usuario
     fun onUsuarioIdUsuarioChange(valor: String) {
         _estado.update {
             it.copy(
