@@ -11,7 +11,6 @@ import com.example.model.ErrorUsuario
 import com.example.model.Usuario
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 data class SistemaProyec(
@@ -29,8 +28,7 @@ abstract class SistemaViewModel : ViewModel() {
     private val _estado = MutableStateFlow(value = SistemaProyec())
     val estado: StateFlow<SistemaProyec> = _estado
 
-
-   //Acceso
+ //acceso
     fun onIdAccesoChange(valor: String) {
         _estado.update {
             it.copy(
@@ -62,7 +60,7 @@ abstract class SistemaViewModel : ViewModel() {
         val accesoActual = _estado.value.acceso
 
         val erroresCalculados = AccesoErrores(
-            idAcceso = (if (accesoActual.idAcceso <= 0) "El ID debe ser mayor a 0" else null) as Int?,
+            idAcceso = if (accesoActual.idAcceso <= 0) 1 else null,
             nombreAcceso = if (accesoActual.nombreAcceso.isBlank()) "El Nombre no puede ir en blanco" else null,
             ubicacionDescripcion = if (accesoActual.ubicacionDescripcion.isBlank()) "Debe agregar Ubicación" else null
         )
@@ -79,7 +77,8 @@ abstract class SistemaViewModel : ViewModel() {
 
         return !hayErrores
     }
-//Registro
+
+//registro
     fun onIdRegistroChange(valor: String) {
         _estado.update {
             it.copy(
@@ -141,8 +140,8 @@ abstract class SistemaViewModel : ViewModel() {
         val idAccInt = registroActual.idAcceso.toIntOrNull() ?: 0
 
         val errores = RegistroErrores(
-            idRegistro = (if (idRegInt <= 0) "ID de registro inválido" else null) as Int?,
-            idAcceso = (if (idAccInt <= 0) "Seleccione un acceso válido" else null) as Int?,
+            idRegistro = if (idRegInt <= 0) 1 else null,
+            idAcceso = if (idAccInt <= 0) 1 else null,
             fechaHora = if (registroActual.fechaHora.isBlank()) "La fecha y hora es obligatoria" else null,
             tipoCliente = if (registroActual.tipoCliente.isBlank()) "Indica el tipo de cliente" else null,
             rangoEtario = if (registroActual.rangoEtario.isBlank()) "El rango etario debe registrarse" else null,
@@ -165,7 +164,7 @@ abstract class SistemaViewModel : ViewModel() {
         return !hayErrores
     }
 
-    //transaccion
+  //transaccion
     fun onIdTransaccionChange(valor: String) {
         _estado.update {
             it.copy(
@@ -215,11 +214,11 @@ abstract class SistemaViewModel : ViewModel() {
         val transaccionActual = _estado.value.transaccionVenta
 
         val errores = ErrorTransaccionVenta(
-            idTransaccion = (if (transaccionActual.idTransaccion <= 0) "ID de transacción inválido" else null) as Int?,
-            idAccesoIngreso = (if (transaccionActual.idAccesoIngreso <= 0) "Selecciona un acceso válido" else null) as Int?,
-            idUsuario = (if (transaccionActual.idUsuario.isBlank()) "Selecciona un usuario válido" else null) ,
+            idTransaccion = if (transaccionActual.idTransaccion <= 0) 1 else null,
+            idAccesoIngreso = if (transaccionActual.idAccesoIngreso <= 0) 1 else null,
+            idUsuario = if (transaccionActual.idUsuario.isBlank()) "Selecciona un usuario válido" else null,
             fechaHora = if (transaccionActual.fechaHora.isBlank()) "La fecha y hora son obligatorias" else null,
-            montoTotal = (if (transaccionActual.montoTotal <= 0.0) "El monto debe ser mayor a 0" else null) as Double?
+            montoTotal = if (transaccionActual.montoTotal <= 0.0) 1.0 else null
         )
 
         val hayErrores = listOfNotNull(
@@ -282,8 +281,6 @@ abstract class SistemaViewModel : ViewModel() {
             idUsuario = if (idUserInt <= 0) "ID de usuario inválido" else null,
             nombre = if (usuarioActual.nombre.isBlank()) "El nombre es obligatorio" else null,
             correo = if (!usuarioActual.correo.contains("@")) "Correo inválido" else null
-
-
         )
 
         val hayErrores = listOfNotNull(
