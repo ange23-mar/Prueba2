@@ -1,8 +1,8 @@
 package com.example.model
 
 data class RegistroConteo(
-    val idRegistro:Int=0,
-    val idAcceso: Int=0,
+    val idRegistro:String = null,
+    val idAcceso: String = null,
     val fechaHora:String= "",
     val tipoCliente:String= "",
     val rangoEtario:String= "",

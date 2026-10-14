@@ -1,7 +1,7 @@
 package com.example.model
 
 data class ErrorUsuario(
-    val idUsuario: Int? = null,
+    val idUsuario: String? = null,
     val nombre: String? = null,
     val rol: String? = null,
     val correo: String? =null,
