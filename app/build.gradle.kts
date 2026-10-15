@@ -34,6 +34,8 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.material)
 
     // --- VIEWMODEL Y CORRUTINAS (Directo) ---
