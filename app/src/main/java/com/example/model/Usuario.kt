@@ -8,3 +8,4 @@ data class Usuario(
     val clave: String="",
     val ErrorUsu: ErrorUsuario = ErrorUsuario()
 )
+

@@ -22,8 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.myapplication.viewmodel.UsuarioViewModel
 import com.example.viewmodel.SistemaViewModel
+
 
 
 @Composable
@@ -33,15 +33,15 @@ fun Registro(
 ) {
     val estadoProyec by viewModel.estado.collectAsState()
     val usuario = estadoProyec.usuario
-    val errorUsuario = estadoProyec.errorUsuario
+    val errorUsuario = estadoProyec.ErrorUsuario
 
-    Column(
+    Column1(
         modifier = Modifier
             .fillMaxSize()
             .padding(all = 16.dp),
         verticalArrangement = Arrangement.spacedBy(space = 12.dp)
     ) {
-        Text(
+        Text1(
             text = "Registro de Usuario",
             style = MaterialTheme.typography.headlineMedium
         )
