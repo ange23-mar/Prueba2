@@ -15,7 +15,7 @@ import kotlin.random.Random
  * Supuestos de ejemplo: los accesos que conectan con la tienda vecina (3) y el mall (1, 2)
  * tienen más tránsito; el estacionamiento (4) tiene más compradores.
  */
-object DatosSinteticos {
+object Initializer {
 
     private val ingresosBase = mapOf(1 to 220, 2 to 160, 3 to 190, 4 to 90)      // por franja horaria
     private val porcentajeTransito = mapOf(1 to 0.62, 2 to 0.55, 3 to 0.72, 4 to 0.40)
@@ -82,8 +82,7 @@ object DatosSinteticos {
                     fechaHora = ts,
                     tipoFlujo = tipo,
                     rangoEtario = rango,
-                    cantidad = cantidad,
-                    sincronizado = true // datos de ejemplo: se consideran ya "en el servidor"
+                    cantidad = cantidad
                 )
             }
         }

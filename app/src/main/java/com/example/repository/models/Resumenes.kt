@@ -16,6 +16,6 @@ data class TotalAccesoTipo(
 )
 
 data class TotalRango(
-    val rangoEtario: RangoEtario?,
+    val rangoEtario: RangoEtario,
     val total: Int
 )

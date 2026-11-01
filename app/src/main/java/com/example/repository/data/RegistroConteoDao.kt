@@ -23,6 +23,9 @@ interface RegistroConteoDao {
     @Insert
     suspend fun insertAll(registros: List<RegistroConteo>)
 
+    @Query("SELECT COUNT(*) FROM registro_conteo")
+    suspend fun contar(): Int
+
     @Query("DELETE FROM registro_conteo")
     suspend fun deleteAll()
 }

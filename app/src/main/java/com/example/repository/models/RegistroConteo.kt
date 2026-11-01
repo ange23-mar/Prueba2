@@ -22,5 +22,5 @@ data class RegistroConteo(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val accesoId: Int,
     val fechaHora: Long,
-    val cantidadIngresos: Int
+    val cantidad: Int
 )
