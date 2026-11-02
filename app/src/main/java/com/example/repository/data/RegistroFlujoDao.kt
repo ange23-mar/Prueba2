@@ -16,7 +16,8 @@ interface RegistroFlujoDao {
     @Query("SELECT * FROM registro_flujo WHERE fechaHora >= :desde ORDER BY fechaHora DESC LIMIT 200")
     fun getDesde(desde: Long): Flow<List<RegistroFlujo>>
 
-    // Tránsito vs. compra por acceso en un periodo (pantalla Resumen)
+    // Tránsito vs. compra por acceso en un periodo (pantalla Resumen).
+    // Incluye automáticamente los registros generados por clientes (usuarioId != null).
     @Query(
         """
         SELECT accesoId, tipoFlujo, SUM(cantidad) AS total
@@ -51,15 +52,9 @@ interface RegistroFlujoDao {
     @Delete
     suspend fun delete(registro: RegistroFlujo)
 
-    // --- Apoyo a la sincronización con el backend ---
-    @Query("SELECT * FROM registro_flujo WHERE sincronizado = 0")
-    suspend fun pendientes(): List<RegistroFlujo>
-
-    @Query("UPDATE registro_flujo SET sincronizado = 1 WHERE id = :id")
-    suspend fun marcarSincronizado(id: Int)
-
-    @Query("DELETE FROM registro_flujo WHERE sincronizado = 1")
-    suspend fun borrarSincronizados()
+    // Al regenerar datos de ejemplo se conservan los registros de clientes
+    @Query("DELETE FROM registro_flujo WHERE usuarioId IS NULL")
+    suspend fun deleteFicticios()
 
     @Query("DELETE FROM registro_flujo")
     suspend fun deleteAll()

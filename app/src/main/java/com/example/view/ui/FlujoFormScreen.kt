@@ -28,7 +28,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.repository.models.RangoEtario
 import com.example.repository.models.TipoFlujo
 import com.example.view.utils.AnimacionEntradaFormulario
+import com.example.view.utils.CameraCapture
 import com.example.view.utils.CampoSelector
+import com.example.view.utils.PhotoBox
 import com.example.viewmodels.FlujoViewModel
 
 /** Formulario para registrar cuántas personas de un tipo/rango pasaron por un acceso. */
@@ -40,11 +42,26 @@ fun FlujoFormScreen(viewModel: FlujoViewModel, onDone: () -> Unit) {
     var tipo by rememberSaveable { mutableStateOf(TipoFlujo.TRANSITO) }
     var rango by rememberSaveable { mutableStateOf(RangoEtario.SIN_DATO) }
     var cantidad by rememberSaveable { mutableStateOf("") }
+    var fotoUri by rememberSaveable { mutableStateOf<String?>(null) }
+    var showCamera by rememberSaveable { mutableStateOf(false) }
     var error by rememberSaveable { mutableStateOf<String?>(null) }
     var visible by rememberSaveable { mutableStateOf(false) }
 
     // Activa la animación de entrada una sola vez al abrir la pantalla
     LaunchedEffect(Unit) { visible = true }
+
+    // Pantalla de cámara a pantalla completa (CameraX); al capturar vuelve al formulario
+    if (showCamera) {
+        CameraCapture(
+            carpeta = "registros",
+            onImageCaptured = { uri ->
+                fotoUri = uri.toString()
+                showCamera = false
+            },
+            onClose = { showCamera = false }
+        )
+        return
+    }
 
     AnimacionEntradaFormulario(visible = visible) {
         Column(
@@ -58,9 +75,9 @@ fun FlujoFormScreen(viewModel: FlujoViewModel, onDone: () -> Unit) {
 
             CampoSelector(
                 etiqueta = "Acceso",
-                valorActual = accesos.firstOrNull { it.id == accesoId }?.nombre ?: "Seleccione",
+                valorActual = accesos.firstOrNull { it.id == accesoId }?.nombreAcceso ?: "Seleccione",
                 opciones = accesos,
-                textoDe = { it.nombre },
+                textoDe = { it.nombreAcceso },
                 onSeleccion = { accesoId = it.id }
             )
 
@@ -83,6 +100,9 @@ fun FlujoFormScreen(viewModel: FlujoViewModel, onDone: () -> Unit) {
                 onSeleccion = { rango = it }
             )
 
+            Text("Foto de evidencia (opcional)", style = MaterialTheme.typography.titleSmall)
+            PhotoBox(imageUri = fotoUri, onTakePhoto = { showCamera = true })
+
             OutlinedTextField(
                 value = cantidad,
                 onValueChange = { cantidad = it },
@@ -97,7 +117,7 @@ fun FlujoFormScreen(viewModel: FlujoViewModel, onDone: () -> Unit) {
             Button(
                 onClick = {
                     // El ViewModel valida; si devuelve un mensaje se muestra, si no, se cierra
-                    error = viewModel.guardar(accesoId, tipo, rango, cantidad)
+                    error = viewModel.guardar(accesoId, tipo, rango, cantidad, fotoUri)
                     if (error == null) onDone()
                 },
                 modifier = Modifier.fillMaxWidth()

@@ -46,12 +46,6 @@ android {
     }
 }
 
-configurations.all {
-    resolutionStrategy {
-        force("androidx.appcompat:appcompat:1.7.0")
-        force("androidx.core:core-ktx:1.13.1")
-    }
-}
 dependencies {
     // Core + Lifecycle (MVVM)
     implementation(libs.androidx.core.ktx)
@@ -79,13 +73,11 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.kotlinx.coroutines.android)
 
-    // CameraX
+    // CameraX (cámara) y Coil (mostrar las fotos tomadas)
     implementation(libs.androidx.camera.core)
     implementation(libs.androidx.camera.camera2)
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
-
-    // Coil (mostrar fotos tomadas)
     implementation(libs.coil.compose)
 
     // Tests

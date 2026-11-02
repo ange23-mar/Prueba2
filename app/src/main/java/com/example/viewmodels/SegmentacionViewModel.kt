@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.repository.data.AppDatabase
-import com.example.repository.data.ConteoDao
+import com.example.repository.data.ConteoRepository
 import com.example.repository.models.Acceso
 import com.example.repository.models.RangoEtario
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -32,7 +32,7 @@ data class SegmentacionUiState(
 @OptIn(ExperimentalCoroutinesApi::class)
 class SegmentacionViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = ConteoDao(AppDatabase.getDatabase(application))
+    private val repository = ConteoRepository(AppDatabase.getDatabase(application))
 
     private val periodo = MutableStateFlow(Periodo.TREINTA_DIAS)
     private val accesoId = MutableStateFlow(0)

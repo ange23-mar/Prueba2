@@ -21,10 +21,20 @@ interface RegistroConteoDao {
     fun totalesPorAcceso(desde: Long): Flow<List<TotalAcceso>>
 
     @Insert
+    suspend fun insert(registro: RegistroConteo): Long
+
+    @Insert
     suspend fun insertAll(registros: List<RegistroConteo>)
 
     @Query("SELECT COUNT(*) FROM registro_conteo")
     suspend fun contar(): Int
+
+    // Datos ficticios = los que no vienen de un cliente
+    @Query("SELECT COUNT(*) FROM registro_conteo WHERE usuarioId IS NULL")
+    suspend fun contarFicticios(): Int
+
+    @Query("DELETE FROM registro_conteo WHERE usuarioId IS NULL")
+    suspend fun deleteFicticios()
 
     @Query("DELETE FROM registro_conteo")
     suspend fun deleteAll()

@@ -27,6 +27,7 @@ import com.example.view.utils.LeyendaItem
 import com.example.view.utils.SelectorPeriodo
 import com.example.viewmodels.DashboardViewModel
 import com.example.viewmodels.ResumenAcceso
+import com.example.viewmodels.ResumenClientes
 import kotlin.math.roundToInt
 
 private fun porcentaje(parte: Int, total: Int): Int =
@@ -71,6 +72,9 @@ fun DashboardScreen(viewModel: DashboardViewModel) {
             }
         }
 
+        // Aporte de los clientes que registran su ingreso/salida desde la app
+        item { TarjetaClientes(state.clientes) }
+
         items(state.resumen, key = { it.acceso.id }) { resumen -> TarjetaAcceso(resumen) }
 
         item {
@@ -104,10 +108,10 @@ private fun TarjetaAcceso(r: ResumenAcceso) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(r.acceso.nombre, style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+                Text(r.acceso.nombreAcceso, style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
                 Text("${r.total} ingresos", style = MaterialTheme.typography.titleSmall)
             }
-            Text(r.acceso.ubicacion, style = MaterialTheme.typography.bodySmall)
+            Text(r.acceso.ubicacionDescripcion, style = MaterialTheme.typography.bodySmall)
 
             BarraApilada(r.transito, r.compra, r.sinClasificar)
 
@@ -115,6 +119,40 @@ private fun TarjetaAcceso(r: ResumenAcceso) {
             LeyendaItem(ColoresFlujo.compra, "Compra: ${r.compra} (${porcentaje(r.compra, r.total)}%)")
             if (r.sinClasificar > 0) {
                 LeyendaItem(ColoresFlujo.sinClasificar, "Sin clasificar: ${r.sinClasificar}")
+            }
+        }
+    }
+}
+
+/** Métricas alimentadas por los registros de Ingreso/Salida de los clientes (Room, en vivo). */
+@Composable
+private fun TarjetaClientes(c: ResumenClientes) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+    ) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("Clientes vía app", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+                Text("${c.dentroAhora} dentro ahora", style = MaterialTheme.typography.titleSmall)
+            }
+            if (c.ingresos == 0 && c.salidas == 0) {
+                Text("Aún no hay movimientos de clientes en este periodo.", style = MaterialTheme.typography.bodyMedium)
+            } else {
+                BarraApilada(transito = c.ingresosTransito, compra = c.ingresosCompra, sinClasificar = 0)
+                LeyendaItem(
+                    ColoresFlujo.transito,
+                    "Ingresos solo transita: ${c.ingresosTransito} (${porcentaje(c.ingresosTransito, c.ingresos)}%)"
+                )
+                LeyendaItem(
+                    ColoresFlujo.compra,
+                    "Ingresos con compra: ${c.ingresosCompra} (${porcentaje(c.ingresosCompra, c.ingresos)}%)"
+                )
+                Text("Salidas registradas: ${c.salidas}", style = MaterialTheme.typography.bodySmall)
+                Text(
+                    "Estos ingresos ya están sumados en el total y en cada acceso.",
+                    style = MaterialTheme.typography.bodySmall
+                )
             }
         }
     }

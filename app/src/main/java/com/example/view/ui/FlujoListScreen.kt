@@ -1,6 +1,13 @@
 package com.example.view.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import coil.compose.AsyncImage
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -52,19 +59,37 @@ fun FlujoListScreen(viewModel: FlujoViewModel, onAdd: () -> Unit) {
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 items(flujos, key = { it.id }) { flujo ->
-                    val nombreAcceso = accesos.firstOrNull { it.id == flujo.accesoId }?.nombre
+                    val nombreAcceso = accesos.firstOrNull { it.id == flujo.accesoId }?.nombreAcceso
                         ?: "Acceso ${flujo.accesoId}"
                     Card(modifier = Modifier.fillMaxWidth()) {
                         Row(
                             modifier = Modifier.padding(12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            // Miniatura de la foto de evidencia (si existe)
+                            if (flujo.fotoUri != null) {
+                                AsyncImage(
+                                    model = flujo.fotoUri,
+                                    contentDescription = "Foto del registro",
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.size(56.dp).clip(RoundedCornerShape(8.dp))
+                                )
+                                Spacer(Modifier.width(12.dp))
+                            }
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     "$nombreAcceso · ${flujo.tipoFlujo.etiqueta}",
                                     style = MaterialTheme.typography.titleMedium
                                 )
                                 Text("${flujo.cantidad} personas · ${flujo.rangoEtario.etiqueta}")
+                                // Registros generados automáticamente por el Ingreso de un cliente
+                                if (flujo.usuarioId != null) {
+                                    Text(
+                                        "Registrado por cliente (app)",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.secondary
+                                    )
+                                }
                                 Text(
                                     formatearFecha(flujo.fechaHora),
                                     style = MaterialTheme.typography.bodySmall

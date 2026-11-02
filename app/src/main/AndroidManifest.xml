@@ -3,14 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Hardware de cámara: no obligatorio para instalar la app -->
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.camera.any"
-        android:required="false" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.any" android:required="false" />
 
-    <!-- Permiso de cámara -->
+    <!-- Permiso de cámara (también se solicita en tiempo de ejecución) -->
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
