@@ -1,34 +1,23 @@
 package com.example.repository.data
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Update
 import com.example.repository.models.Usuario
 import kotlinx.coroutines.flow.Flow
 
-@Dao
-interface UsuarioDao {
-    // LOGIN
-    @Query("SELECT * FROM usuarios WHERE email = :email AND password = :password LIMIT 1")
-    suspend fun login(email: String, password: String): Usuario?
+/** Fuente de datos de usuarios (login, registro de clientes y perfil). */
+class UsuarioRepository(db: AppDatabase) {
 
-    // READ reactivo: el perfil y el menú se actualizan solos (ej. al cambiar la foto)
-    @Query("SELECT * FROM usuarios WHERE id = :id")
-    fun observarPorId(id: Int): Flow<Usuario?>
+    private val usuarioDao = db.usuarioDao()
 
-    @Query("SELECT * FROM usuarios WHERE id = :id")
-    suspend fun getById(id: Int): Usuario?
+    suspend fun login(email: String, password: String): Usuario? = usuarioDao.login(email, password)
 
-    // CREATE (ABORT: el email es único)
-    @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insert(usuario: Usuario): Long
+    fun observar(id: Int): Flow<Usuario?> = usuarioDao.observarPorId(id)
 
-    // UPDATE
-    @Update
-    suspend fun update(usuario: Usuario)
+    suspend fun obtener(id: Int): Usuario? = usuarioDao.getById(id)
 
-    @Query("UPDATE usuarios SET fotoPerfilUri = :uri WHERE id = :id")
-    suspend fun actualizarFoto(id: Int, uri: String?)
+    /** Lanza SQLiteConstraintException si el email ya existe. */
+    suspend fun crear(usuario: Usuario): Long = usuarioDao.insert(usuario)
+
+    suspend fun actualizar(usuario: Usuario) = usuarioDao.update(usuario)
+
+    suspend fun actualizarFoto(id: Int, uri: String?) = usuarioDao.actualizarFoto(id, uri)
 }
