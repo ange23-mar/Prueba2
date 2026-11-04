@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RegistroConteoDao {
-    // Total de ingresos por acceso desde una fecha (el "conteo agregado" del sistema actual)
+    // Total de ingresos por acceso desde una fecha
     @Query(
         """
         SELECT accesoId, SUM(cantidad) AS total

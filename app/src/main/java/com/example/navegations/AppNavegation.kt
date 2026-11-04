@@ -72,19 +72,19 @@ import com.example.viewmodels.SegmentacionViewModel
 import com.example.viewmodels.UsuarioViewModel
 import kotlinx.coroutines.launch
 
-/** Rutas de navegación */
+/** RUTAS DE NAVEGACIÓN */
 object Routes {
-    // Públicas
+    /** Públicas **/
     const val LOGIN = "login"
     const val REGISTRO = "registro_cliente"
 
-    // ADMINISTRADOR
+    /** Administrador**/
     const val DASHBOARD = "dashboard"
     const val SEGMENTACION = "segmentacion"
     const val FLUJOS = "flujos"
     const val FLUJO_FORM = "flujo_form"
 
-    // CLIENTE
+    /** Cliente **/
     const val CLIENTE_MOVIMIENTOS = "cliente_movimientos"
     const val CLIENTE_PERFIL = "cliente_perfil"
 
@@ -92,7 +92,7 @@ object Routes {
     val administrador = setOf(DASHBOARD, SEGMENTACION, FLUJOS, FLUJO_FORM)
     val cliente = setOf(CLIENTE_MOVIMIENTOS, CLIENTE_PERFIL)
 
-    /** Pantalla inicial según el rol: Dashboard para admin, Ingreso/Salida para cliente. */
+    /** Pantalla inicial >> Dashboard para admin, Ingreso/Salida para cliente.*/
     fun inicioPara(rol: RolUsuario): String = when (rol) {
         RolUsuario.ADMINISTRADOR -> DASHBOARD
         RolUsuario.CLIENTE -> CLIENTE_MOVIMIENTOS
@@ -106,14 +106,14 @@ object Routes {
 
 data class MenuItem(val route: String, val label: String, val icon: ImageVector)
 
-/** Menú lateral del ADMINISTRADOR (Dashboard existente) */
+//Menú lateral del Administrador
 val menuAdministrador = listOf(
     MenuItem(Routes.DASHBOARD, "Resumen por acceso", Icons.Default.Dashboard),
     MenuItem(Routes.SEGMENTACION, "Perfil de tránsito", Icons.Default.PieChart),
     MenuItem(Routes.FLUJOS, "Registros", Icons.AutoMirrored.Filled.ListAlt)
 )
 
-/** Menú lateral del CLIENTE */
+//Menú lateral del cliente
 val menuCliente = listOf(
     MenuItem(Routes.CLIENTE_MOVIMIENTOS, "Ingreso / Salida", Icons.Default.SwapHoriz),
     MenuItem(Routes.CLIENTE_PERFIL, "Mi perfil", Icons.Default.AccountCircle)
@@ -169,7 +169,8 @@ fun AppNavigation(
         movimientoViewModel.setUsuario(sesion?.id)
     }
 
-    // Protección de rutas: sin sesión -> Login; rol sin permiso -> su pantalla de inicio
+    // Protección de rutas: sin sesión > Login;
+    // rol sin permiso > su pantalla de inicio
     LaunchedEffect(sesion, currentRoute) {
         val route = currentRoute ?: return@LaunchedEffect
         if (route in Routes.publicas) return@LaunchedEffect
@@ -272,7 +273,8 @@ fun AppNavigation(
     }
 }
 
-/** Cabecera del menú lateral: foto de perfil (si existe), nombre, email y rol. */
+/** Cabecera del menú lateral:
+ * foto de perfil (si existe), nombre, email y rol. */
 @Composable
 private fun CabeceraMenu(usuario: Usuario?) {
     Row(
@@ -325,7 +327,7 @@ private fun AppNavHost(
         popEnterTransition = navPopEnterTransition,
         popExitTransition = navPopExitTransition
     ) {
-        // ---------- Públicas ----------
+        /** Públicas **/
         composable(Routes.LOGIN) {
             LoginScreen(
                 viewModel = loginViewModel,
@@ -349,7 +351,7 @@ private fun AppNavHost(
             )
         }
 
-        // ---------- ADMINISTRADOR ----------
+        /** Administrador **/
         composable(Routes.DASHBOARD) { DashboardScreen(dashboardViewModel) }
         composable(Routes.SEGMENTACION) { SegmentacionScreen(segmentacionViewModel) }
         composable(Routes.FLUJOS) {
@@ -365,7 +367,7 @@ private fun AppNavHost(
             )
         }
 
-        // ---------- CLIENTE ----------
+        /** Cliente **/
         composable(Routes.CLIENTE_MOVIMIENTOS) {
             ClienteMovimientosScreen(viewModel = movimientoViewModel, usuario = usuarioActual)
         }

@@ -28,7 +28,7 @@ interface RegistroFlujoDao {
     )
     fun totalesPorAccesoYTipo(desde: Long): Flow<List<TotalAccesoTipo>>
 
-    // Perfil etario de quienes SOLO transitan. accesoId = 0 significa "todos los accesos".
+    // Perfil etario de quienes solo transitan. accesoId = 0 significa "todos los accesos".
     @Query(
         """
         SELECT rangoEtario, SUM(cantidad) AS total

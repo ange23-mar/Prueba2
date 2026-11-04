@@ -14,7 +14,7 @@ class UsuarioRepository(db: AppDatabase) {
 
     suspend fun obtener(id: Int): Usuario? = usuarioDao.getById(id)
 
-    /** Lanza SQLiteConstraintException si el email ya existe. */
+    // Lanza Exception si el email ya existe.
     suspend fun crear(usuario: Usuario): Long = usuarioDao.insert(usuario)
 
     suspend fun actualizar(usuario: Usuario) = usuarioDao.update(usuario)

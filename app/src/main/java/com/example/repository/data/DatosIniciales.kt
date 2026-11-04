@@ -7,14 +7,6 @@ import com.example.repository.models.TipoFlujo
 import java.time.LocalDate
 import java.time.ZoneId
 import kotlin.random.Random
-
-/**
- * Generador de datos FICTICIOS (la guía prohíbe usar datos reales del sistema de conteo).
- * Usa una semilla fija, así siempre produce el mismo resultado y es fácil de explicar.
- *
- * Supuestos de ejemplo: los accesos que conectan con la tienda vecina (3) y el mall (1, 2)
- * tienen más tránsito; el estacionamiento (4) tiene más compradores.
- */
 object DatosIniciales {
 
     private val ingresosBase = mapOf(1 to 220, 2 to 160, 3 to 190, 4 to 90)      // por franja horaria

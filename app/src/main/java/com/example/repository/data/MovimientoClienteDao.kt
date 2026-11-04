@@ -14,7 +14,7 @@ interface MovimientoClienteDao {
     @Insert
     suspend fun insert(movimiento: MovimientoCliente): Long
 
-    // Historial del cliente (el primero es el último movimiento -> estado dentro/fuera)
+    // Historial del cliente
     @Query(
         """
         SELECT * FROM movimiento_cliente
@@ -25,7 +25,7 @@ interface MovimientoClienteDao {
     )
     fun historial(usuarioId: Int): Flow<List<MovimientoCliente>>
 
-    // Último movimiento (lectura puntual, se usa dentro de la transacción de registro)
+    // Último movimiento
     @Query("SELECT * FROM movimiento_cliente WHERE usuarioId = :usuarioId ORDER BY fechaHora DESC, id DESC LIMIT 1")
     suspend fun ultimo(usuarioId: Int): MovimientoCliente?
 

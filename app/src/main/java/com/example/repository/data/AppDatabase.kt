@@ -40,7 +40,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "rincon_sur_database"
                 )
-                    // Proyecto académico (MVP): al cambiar la versión se recrea la BD
+                    // Al cambiar la versión se recrea la BD
                     .fallbackToDestructiveMigration()
                     .addCallback(seedCallback)
                     .build()
@@ -50,7 +50,6 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         // Datos base. INSERT OR IGNORE: se ejecuta en cada apertura sin duplicar
-        // (también se recargan después de una migración destructiva).
         private val seedCallback = object : Callback() {
             override fun onOpen(db: SupportSQLiteDatabase) {
                 super.onOpen(db)
